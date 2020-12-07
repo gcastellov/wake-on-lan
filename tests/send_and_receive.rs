@@ -13,6 +13,6 @@ fn send_and_receive_successfully() {
         }
     });
 
-    let result = sender.send("00:00:00:00:00:01", 3);
-    receiver_handle.join();
+    let _ = sender.send("00:00:00:00:00:01", 3);
+    receiver_handle.join().unwrap();
 }
