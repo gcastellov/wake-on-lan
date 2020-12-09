@@ -5,7 +5,7 @@ RUST implementation for WOL (Wake On Lan)
 The sender object will send the magic packet like:
 
 ```
-let sender: Sender = Sender::from("127.0.0.1", "255.0.0.0", 1233);
+let sender: Sender = Sender::from("127.0.0.1", "255.0.0.0");
 let _ = sender.send("00:00:00:00:00:01", 3);
 ```
 
@@ -25,7 +25,7 @@ As shown in the tests.
 #[test]
 fn send_and_receive_successfully() {
     let receiver = Receiver::from("127.0.0.1", 3);
-    let sender: Sender = Sender::from("127.0.0.1", "255.0.0.0", 1233);
+    let sender: Sender = Sender::from("127.0.0.1", "255.0.0.0");
 
     let receiver_handle = std::thread::spawn(move || {
         let result = receiver.listen(Some(Duration::new(10, 0)));

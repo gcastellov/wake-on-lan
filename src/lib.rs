@@ -4,8 +4,7 @@ use std::str::FromStr;
 
 pub struct Sender {
     ip_address: Ipv4Addr,
-    mask_address: Ipv4Addr,
-    outbound_port_number: u16,
+    mask_address: Ipv4Addr
 }
 
 pub struct Receiver {
@@ -14,7 +13,7 @@ pub struct Receiver {
 }
 
 impl Sender {
-    pub fn from(ip_address: &str, mask_address: &str, outbound_port_number: u16) -> Self {
+    pub fn from(ip_address: &str, mask_address: &str) -> Self {
         let ip_result = Ipv4Addr::from_str(ip_address);
         let mask_result = Ipv4Addr::from_str(mask_address);
 
@@ -26,29 +25,17 @@ impl Sender {
             panic!("Invalid mask address");
         }
 
-        Sender::new(
-            ip_result.unwrap(),
-            mask_result.unwrap(),
-            outbound_port_number,
-        )
+        Sender::new(ip_result.unwrap(), mask_result.unwrap())
     }
 
-    pub fn new(ip_address: Ipv4Addr, mask_address: Ipv4Addr, outbound_port_number: u16) -> Self {
-        Sender {
-            ip_address,
-            mask_address,
-            outbound_port_number,
-        }
+    pub fn new(ip_address: Ipv4Addr, mask_address: Ipv4Addr) -> Self {
+        Sender { ip_address,mask_address }
     }
 
     pub fn send(&self, mac_address: &str, port_number: u16) -> Result<(), &str> {
         if let Some(datagram) = get_datagram_from_mac_address(mac_address) {
             let broadcast_address = get_broadcatst_address(self.ip_address.octets(), self.mask_address.octets());            
-            let socket = UdpSocket::bind(SocketAddr::from((
-                self.ip_address,
-                self.outbound_port_number,
-            )))
-            .map_err(|_|"Couldn't bind to address")?;
+            let socket = UdpSocket::bind(SocketAddr::from((self.ip_address, 0))).map_err(|_|"Couldn't bind to address")?;
             
             match socket.send_to(&datagram, SocketAddrV4::new(broadcast_address, port_number)) {
                 Err(_) => Err("Error while sending data"),
