@@ -4,7 +4,7 @@ RUST implementation for WOL (Wake On Lan)
 ## Using sender
 The sender object will send the magic packet like:
 
-```
+```rust
 let sender: Sender = Sender::from("127.0.0.1", "255.0.0.0");
 let _ = sender.send("00:00:00:00:00:01", 3);
 ```
@@ -13,7 +13,7 @@ let _ = sender.send("00:00:00:00:00:01", 3);
 The receiver is only used to prove the magic packet is sent via broadcasting UDP. 
 Maybe useful for some testing implementations.
 
-```
+```rust
 let receiver = Receiver::from("127.0.0.1", 3);
 receiver.listen(None);
 ```
@@ -21,7 +21,7 @@ receiver.listen(None);
 ## Send and receive
 As shown in the tests.
 
-```
+```rust
 #[test]
 fn send_and_receive_successfully() {
     let receiver = Receiver::from("127.0.0.1", 3);
