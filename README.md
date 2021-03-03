@@ -1,3 +1,5 @@
+![Rust](https://github.com/gcastellov/wake-on-lan/workflows/Rust/badge.svg)
+
 # wake-on-lan
 RUST implementation for WOL (Wake On Lan)
 
